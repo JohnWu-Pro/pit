@@ -16,8 +16,8 @@ Spring
 JPA 2.1
 Spring-Data-JPA
 QueryDSL
-Wicket 6.15
-H2
+Wicket 6.15 / AngularJS
+H2 / MongoDB
 Servlet 3.1
 Jetty
 ? Spring-Boot
