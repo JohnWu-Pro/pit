@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<configuration debug="true">
+    <contextName>PIT</contextName>
+
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%d{MM-dd HH:mm:ss.SSS} [%-5level] [%thread] %logger - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <logger name="org.hibernate" level="INFO" />
+    <logger name="org.hibernate.jpa.internal.util.LogHelper" level="DEBUG" />
+
+    <logger name="org.springframework" level="INFO" />
+
+    <logger name="org.wjh" level="DEBUG" />
+    <logger name="org.wjh.logging.MethodInvocationLogger" level="TRACE" />
+
+    <!--
+    <logger name="org.hibernate.SQL" level="DEBUG" />
+    <logger name="org.hibernate.type" level="TRACE" />
+
+    <logger name="org.springframework.orm.jpa.JpaTransactionManager" level="DEBUG" />
+    -->
+
+    <root level="INFO">
+        <appender-ref ref="STDOUT" />
+    </root>
+
+</configuration>

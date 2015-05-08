@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:p="http://www.springframework.org/schema/p"
+        xmlns:aop="http://www.springframework.org/schema/aop"
+        xmlns:tx="http://www.springframework.org/schema/tx"
+        xsi:schemaLocation="
+            http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+            http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd
+            http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
+            ">
+
+    <!-- PlatformTransactionManager -->
+    <bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager"
+            p:entityManagerFactory-ref="entityManagerFactory"
+            p:transactionSynchronizationName="SYNCHRONIZATION_ON_ACTUAL_TRANSACTION" />
+
+    <bean id="txAdvice" class="org.wjh.springframework.transaction.RetryableTransactionInterceptor">
+        <property name="transactionManager" ref="transactionManager" />
+        <property name="transactionAttributeSource" ref="transactionAttributeSource" />
+        <property name="maxRetry" value="3" />
+        <property name="retryMaxDelayInMills" value="500" />
+        <property name="retryableExceptions">
+            <array>
+                <value>org.springframework.dao.TransientDataAccessException</value>
+                <value>org.hibernate.exception.LockAcquisitionException</value>
+            </array>
+        </property>
+    </bean>
+
+    <bean id="transactionAttributeSource" class="org.springframework.transaction.interceptor.CompositeTransactionAttributeSource">
+        <constructor-arg>
+            <array>
+                <bean class="org.springframework.transaction.interceptor.MethodMapTransactionAttributeSource">
+                    <property name="methodMap">
+                        <map>
+                            <!-- <entry key="org.wjh.service.LongRunningService.run" value="PROPAGATION_NOT_SUPPORTED" /> -->
+
+                            <!-- <entry key="org.wjh.reporting.InstantReportService.*" value="PROPAGATION_REQUIRES_NEW" /> -->
+                        </map>
+                    </property>
+                </bean>
+                <bean class="org.springframework.transaction.interceptor.NameMatchTransactionAttributeSource">
+                    <property name="nameMap">
+                        <map>
+                            <entry key="count*" value="PROPAGATION_REQUIRED,readOnly" />
+                            <entry key="find*" value="PROPAGATION_REQUIRED,readOnly" />
+                            <entry key="get*" value="PROPAGATION_REQUIRED,readOnly" />
+                            <entry key="has*" value="PROPAGATION_REQUIRED,readOnly" />
+                            <entry key="is*" value="PROPAGATION_REQUIRED,readOnly" />
+                            <entry key="list*" value="PROPAGATION_REQUIRED,readOnly" />
+                            <entry key="query*" value="PROPAGATION_REQUIRED,readOnly" />
+                            <entry key="search*" value="PROPAGATION_REQUIRED,readOnly" />
+
+                            <!-- <entry key="*" value="PROPAGATION_REQUIRED,+org.wjh.service.DoNotRollbackException,-java.lang.Throwable" /> -->
+                            <entry key="*" value="PROPAGATION_REQUIRED,-java.lang.Throwable" />
+                        </map>
+                    </property>
+                </bean>
+            </array>
+        </constructor-arg>
+    </bean>
+
+    <bean id="transactionService" class="org.wjh.framework.transaction.SimpleTransactionService" />
+
+    <bean id="injectTransactionService" class="org.springframework.beans.factory.config.MethodInvokingFactoryBean"
+            p:staticMethod="com.gide.vmsng.tx.TransactionUtils.setTransactionService"
+            p:arguments-ref="transactionService" />
+
+    <aop:config>
+        <aop:pointcut id="txPointcut-serviceOperations" expression="execution(* org.wjh.pit..*Service.*(..))" />
+
+        <aop:advisor advice-ref="txAdvice" pointcut-ref="txPointcut-serviceOperations" />
+    </aop:config>
+
+</beans>

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:p="http://www.springframework.org/schema/p"
+        xmlns:aop="http://www.springframework.org/schema/aop"
+        xsi:schemaLocation="
+            http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+            http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd
+            ">
+
+    <bean id="traceLoggingAdvice" class="org.springframework.aop.interceptor.CustomizableTraceInterceptor">
+        <property name="loggerName" 		value="org.wjh.logging.MethodInvocationLogger" />
+        <property name="hideProxyClassNames" value="true" />
+        <property name="enterMessage" 		value="Calling $[targetClassName].$[methodName]($[arguments]) ..." />
+        <property name="exitMessage" 		value="Exiting $[targetClassName].$[methodName]($[arguments]): $[returnValue]" />
+        <property name="exceptionMessage" 	value="Exiting $[targetClassName].$[methodName]($[arguments]) with Exception: $[exception]" />
+    </bean>
+
+    <aop:config>
+        <!-- <aop:pointcut id="traceLoggingPointcut-configOperations" expression="execution(* org.wjh.framework.config.ConfigEntryAggregator.*(..))" /> -->
+        <!-- <aop:pointcut id="traceLoggingPointcut-daoOperations" expression="execution(* org.wjh..*Dao.*(..))" /> -->
+        <aop:pointcut id="traceLoggingPointcut-serviceOperations" expression="execution(* org.wjh..*Service.*(..))" />
+
+        <!-- <aop:advisor advice-ref="traceLoggingAdvice" pointcut-ref="traceLoggingPointcut-configOperations" /> -->
+        <!-- <aop:advisor advice-ref="traceLoggingAdvice" pointcut-ref="traceLoggingPointcut-daoOperations" /> -->
+        <aop:advisor advice-ref="traceLoggingAdvice" pointcut-ref="traceLoggingPointcut-serviceOperations" />
+    </aop:config>
+
+</beans>

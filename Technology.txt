@@ -1,0 +1,23 @@
+Java 6
+Maven
+Spring
+JPA 2.1
+Wicket 6.15
+H2
+Servlet 3.0
+Tomcat 7.0.52
+
+
+=== === ===
+Java 8
+Groovy 2.2+
+Gradle 1.11+
+Spring
+JPA 2.1
+Spring-Data-JPA
+QueryDSL
+Wicket 6.15
+H2
+Servlet 3.1
+Jetty
+? Spring-Boot

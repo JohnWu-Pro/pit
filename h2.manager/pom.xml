@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>org.wjh.pit</groupId>
+        <artifactId>pit-project-pom</artifactId>
+        <version>1.0.0.BUILD-SNAPSHOT</version>
+    </parent>
+
+    <artifactId>pit-h2-manager</artifactId>
+    <packaging>pom</packaging>
+
+    <name>Personal Investment Tracker - H2 Manager</name>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-antrun-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>start-h2</id>
+                        <phase>initialize</phase>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                        <configuration>
+                            <target>
+                                <java fork="true" spawn="true"
+                                  classname="org.h2.tools.Server"
+                                  classpathref="maven.plugin.classpath">
+                                    <arg value="-tcp" />
+                                    <arg value="-web" />
+                                </java>
+                            </target>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>stop-h2</id>
+                        <phase>clean</phase>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                        <configuration>
+                            <target>
+                                <java
+                                  classname="org.h2.tools.Server"
+                                  classpathref="maven.plugin.classpath">
+                                    <arg value="-tcpShutdown" />
+                                    <arg value="tcp://localhost:9092" />
+                                </java>
+                            </target>
+                        </configuration>
+                    </execution>
+                </executions>
+                <dependencies>
+                    <dependency>
+                        <groupId>com.h2database</groupId>
+                        <artifactId>h2</artifactId>
+                        <version>1.3.176</version>
+                    </dependency>
+                </dependencies>
+            </plugin>
+        </plugins>
+    </build>
+
+</project>

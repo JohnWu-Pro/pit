@@ -1,0 +1,66 @@
+=== Functionality ===
+. Be able to config One-Time Holiday
+. Be able to config Recurrent Holiday
+
+. Be able to input One-Time Transaction
+. Be able to input Recurrent Transaction
+. Be able to input Return of Capital (Box 42) at year end
+
+. Be able to calculate Calendar Year Annual Investment Return Rate of a selected set of Security, Portofolio for a selected date range
+. Be able to calculate Rolling Annual Investment Return Rate of a selected set of Security, Portofolio for a selected date range
+. Be able to calculate/track  Adjusted cost base (ACB) -- http://www.cra-arc.gc.ca/E/pub/tg/rc4169/rc4169-e.html#P46_8193
+
+=== Model ===
+-- Transactional
+Transaction (ID, Portfolio, Security, Date, Unit, Price, Amount, Type, Source, Standing Transaction)
+Standing Transaction (ID, Portfolio, Security, Start Date, End Date, Unit, Amount, Type, Recurrence Setting)
+    Recurrence Setting :: Frequency(params)
+Security Price (Security, Date, Price)
+
+-- Auto-Populated Transactional
+//Investment Track(ID, Portfolio, Security, InDate, InAmount, OutDate, OutAmount)
+
+-- Profile
+Portfolio (ID, Name, Description, Registration Type, Issuer, Tag)
+Calendar (ID, Name, Description)
+Calendar Template (ID, StartDate, EndDate, Recurrence Setting, Calendar)
+    Recurrence Setting :: Frequency(params)
+Calendar Entry (ID, Date, Calendar, Template)
+Security (ID, Name, IssuerCode, GoogleCode, Type, Issuer, Distribution Setting)
+    Distribution Setting :: Rule(params)
+Security Holding (ID, Portfolio, Security, Unit, Total Contribution)
+
+
+-- Category (ID, Name, Description)
+Security Issuer (ID, Name, Description)
+Distribution Rule (ID, Name, Description, FQCN, Params)
+    APU1,Amount per Unit (amount)
+    UPU1,Unit per Unit
+
+-- Enum
+Security Type (ID, Name, Description):
+    MF,MutualFund
+    STK,Stock
+Transaction Type (ID, Name, Description, isContribution, isWithdrawal, isRepeatable):
+    BUY,Buy,Y,N,Y
+    SELL,Sell,N,Y,Y
+    DBUY,Distribution Buy,N,N,Y
+    DCASH,Distribution Cash,N,N,Y
+    SWIN,Switch In,N,N,N
+    SWOUT,Switch Out,N,N,N
+    ADJ,Adjustment,N,N,N
+    ADJ42,Return of Capital,N,Y,N
+Transaction Source (ID, Name, Description):
+    MAN,Manual
+    RECR,Recurrence
+Recurrence Frequency (ID, Name, Description)
+    WEEK,Weekly
+    SMTH,SemiMonthly
+    MTH,Monthly
+    QTR,Quarterly
+    YEAR,Yearly
+Registration Type (ID, Name, Description):
+    OPEN,Open (Non-registered)
+    RESP,Registered Education Savings Plan
+    RRSP,Registered Retirement Savings Plan
+    TFSA,Tax-Free Savings Account

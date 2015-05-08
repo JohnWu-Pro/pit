@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+  <GlobalNamingResources>
+    <Resource auth="Container"
+            name="jdbc/shoppingDS"
+            description="JDBC Datasource"
+            type="javax.sql.DataSource"
+            factory="org.apache.tomcat.jdbc.pool.DataSourceFactory"
+            driverClassName="org.h2.Driver"
+            url="jdbc:h2:tcp://localhost/./data/PIT"
+            username="sa"
+            password="1"
+            initialSize="3" maxIdle="10"
+            maxActive="16"
+            maxWait="1000"
+            validationQuery="SELECT 1"
+            removeAbandonedTimeout="60"
+            removeAbandoned="true"
+            jdbcInterceptors="ConnectionState;ResetAbandonedTimer;SlowQueryReport"
+            />
+  </GlobalNamingResources>
+ -->
+
+<Context>
+
+    <!--
+    <ResourceLink name="jdbc/pitDS"
+            global="jdbc/pitDS"
+            type="javax.sql.DataSource"
+            />
+    -->
+
+    <Resource auth="Container"
+            name="jdbc/pitDS"
+            description="JDBC Datasource"
+            type="javax.sql.DataSource"
+            factory="org.apache.tomcat.jdbc.pool.DataSourceFactory"
+            driverClassName="org.h2.Driver"
+            url="jdbc:h2:tcp://localhost/./data/PIT"
+            username="sa"
+            password="1"
+            initialSize="3" maxIdle="10"
+            maxActive="16"
+            maxWait="1000"
+            validationQuery="SELECT 1"
+            removeAbandonedTimeout="60"
+            removeAbandoned="true"
+            jdbcInterceptors="ConnectionState;ResetAbandonedTimer;SlowQueryReport"
+            />
+
+</Context>

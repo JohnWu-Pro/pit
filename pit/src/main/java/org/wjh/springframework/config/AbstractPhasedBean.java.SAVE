@@ -1,0 +1,70 @@
+package org.wjh.springframework.config;
+
+import org.springframework.context.SmartLifecycle;
+
+public abstract class AbstractPhasedBean implements SmartLifecycle {
+
+    private boolean autoStartup = true;
+    private boolean running = false;
+    private int phase = Integer.MIN_VALUE;
+    private final Object lifecycleMonitor = new Object();
+
+    @Override
+    public void start() {
+        synchronized (this.lifecycleMonitor) {
+            if (!this.running) {
+                doStart();
+                this.running = true;
+            }
+        }
+    }
+
+    protected void doStart() {
+    }
+
+    @Override
+    public boolean isRunning() {
+        synchronized (this.lifecycleMonitor) {
+            return this.running;
+        }
+    }
+
+    @Override
+    public void stop() {
+        synchronized (this.lifecycleMonitor) {
+            if (this.running) {
+                doStop();
+                this.running = false;
+            }
+        }
+    }
+
+    protected void doStop() {
+    }
+
+    @Override
+    public void stop(Runnable callback) {
+        synchronized (this.lifecycleMonitor) {
+            this.stop();
+            callback.run();
+        }
+    }
+
+    @Override
+    public boolean isAutoStartup() {
+        return autoStartup;
+    }
+
+    public void setAutoStartup(boolean autoStartup) {
+        this.autoStartup = autoStartup;
+    }
+
+    @Override
+    public int getPhase() {
+        return phase;
+    }
+
+    public void setPhase(int phase) {
+        this.phase = phase;
+    }
+}

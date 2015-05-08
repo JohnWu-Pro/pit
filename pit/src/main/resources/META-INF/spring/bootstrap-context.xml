@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+    xsi:schemaLocation="
+            http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+            ">
+
+    <!--
+     | This bean is the parent ApplicationContext for the WebApplicationContexts defined in the WARs.
+     | The context files listed here should contain beans that are used by all WARs, for example Services and DAO's.
+     |-->
+    <bean id="bootstrap-context" class="org.springframework.context.support.ClassPathXmlApplicationContext">
+        <constructor-arg>
+            <array>
+                <value>classpath*:META-INF/spring/resource/trace-logging-config.xml</value>
+                <value>classpath*:META-INF/spring/metadata-config.xml</value>
+            </array>
+        </constructor-arg>
+    </bean>
+
+</beans>

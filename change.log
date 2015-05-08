@@ -1,0 +1,26 @@
+#01 This is the change log file for the project. It is maintained by the
+#02 project building tool. if you want to modify this file, please do keep
+#03 the 5th line text as it is.
+#04
+#05 UPDATING_TRACE_NEW_ENTRY_INSERT_POINT
+
+[2015-05-08 12:13:28]
+    Backup for importing to GitHub.
+
+[2014-08-29 16:38:19]
+    Minor changes.
+
+[2014-06-12 16:00:39]
+    Refined bootstrap config; Added IdAwareEnum converters; Added profile entities.
+
+[2014-06-07 00:57:03]
+    Implemented ConfigEntryAggregator - Part II.
+
+[2014-06-06 16:59:12]
+    Added ConfigEntryAggregator - Part I.
+
+[2014-06-05 17:04:53]
+    Changed Aggragated Categories to individual Categories.
+
+[2014-06-03 16:40:15]
+    Implemented Category, CategoryEntry in TWO tables.
